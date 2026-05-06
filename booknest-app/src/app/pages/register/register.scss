@@ -1,0 +1,79 @@
+.auth-shell {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.auth-card {
+  padding: 2rem;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 20px 70px rgba(17, 24, 39, 0.08);
+}
+
+.eyebrow {
+  color: #ff5d73;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0.2rem 0 0.7rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.auth-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.4rem;
+}
+
+label {
+  display: grid;
+  gap: 0.45rem;
+}
+
+input {
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+}
+
+button {
+  padding: 0.95rem 1.2rem;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+  color: white;
+  font-weight: 700;
+}
+
+.error {
+  color: #b42318;
+}
+
+.helper a {
+  color: #ff5d73;
+  font-weight: 700;
+}
+
+.google-btn {
+  width: 100%;
+  margin: 1rem 0 0.75rem;
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #ffffff;
+  color: #1f2937;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0 1rem;
+  color: #64748b;
+  font-size: 0.9rem;
+}

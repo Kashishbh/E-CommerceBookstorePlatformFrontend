@@ -1,0 +1,50 @@
+<section class="page-shell">
+  <div class="wallet-layout">
+    <section class="wallet-card">
+      <p class="eyebrow">Wallet</p>
+      <h1>Pay, top up, refund</h1>
+      <p class="balance">Current balance: <strong>?{{ wallet()?.balance || 0 }}</strong></p>
+
+      <form [formGroup]="topupForm" class="wallet-form">
+        <input formControlName="amount" type="number" min="1" placeholder="Amount" />
+        <input formControlName="remarks" type="text" placeholder="Remarks" />
+      </form>
+
+      <div class="actions">
+        <button type="button" (click)="addMoney()">Add Money</button>
+        <button type="button" class="light" (click)="createRazorpayOrder()" [disabled]="razorpayLoading()">
+          @if (razorpayLoading()) {
+            Opening Razorpay...
+          } @else {
+            Pay with Razorpay
+          }
+        </button>
+      </div>
+
+      @if (razorpayOrderId()) {
+        <div class="note">Latest Razorpay order id: <strong>{{ razorpayOrderId() }}</strong></div>
+      }
+      @if (info()) {
+        <p class="info">{{ info() }}</p>
+      }
+      @if (error()) {
+        <p class="error">{{ error() }}</p>
+      }
+    </section>
+
+    <section class="statement-card">
+      <h3>Statements</h3>
+      @for (statement of statements(); track statement.statementId) {
+        <article class="statement-row">
+          <div>
+            <strong>{{ statement.type }}</strong>
+            <small>{{ statement.remarks }}</small>
+          </div>
+          <span>?{{ statement.amount }}</span>
+        </article>
+      } @empty {
+        <div class="note">No wallet statements yet.</div>
+      }
+    </section>
+  </div>
+</section>

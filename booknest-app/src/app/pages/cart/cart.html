@@ -1,0 +1,136 @@
+<section class="page-shell">
+  <div class="page-head">
+    <div>
+      <p class="eyebrow">Cart</p>
+      <h1>Your checkout desk</h1>
+    </div>
+    <button type="button" class="ghost-btn" (click)="clearCart()">Clear cart</button>
+  </div>
+
+  @if (loading()) {
+    <div class="state">Loading cart...</div>
+  } @else {
+    <div class="cart-layout" [class.empty-layout]="!cart()?.items?.length">
+      <section class="cart-card">
+        @if (!cart()?.items?.length) {
+          <div class="state">Your cart is empty. Add a few books from the catalog to get started.</div>
+        } @else {
+          @for (item of cart()?.items; track item.itemId) {
+            <article class="cart-item">
+              <div class="item-details">
+                <strong>{{ item.bookTitle }}</strong>
+                <p>Price per copy: &#8377;{{ item.price }}</p>
+              </div>
+              <div class="meta-group">
+                <label class="qty-inline">
+                  <span>Quantity</span>
+                  <input type="number" min="1" [value]="item.quantity" (change)="updateQuantity(item.itemId, $any($event.target).value)" />
+                </label>
+                <div class="line-total-inline">
+                  <span>Item total</span>
+                  <strong>&#8377;{{ item.price * item.quantity }}</strong>
+                </div>
+              </div>
+              <button type="button" class="link-btn" [disabled]="removeBusyItemId() === item.itemId" (click)="removeItem(item.itemId)">Remove</button>
+            </article>
+          }
+        }
+      </section>
+
+      @if (cart()?.items?.length) {
+        <aside class="summary-card">
+          <h3>Checkout</h3>
+          <p>Total: <strong>&#8377;{{ cart()?.totalPrice || 0 }}</strong></p>
+          <p class="checkout-note">Fill in the delivery details below and choose how you want to pay.</p>
+
+          <form [formGroup]="checkoutForm" class="checkout-form">
+            <div class="payment-box">
+              <span class="wallet-label">Payment method</span>
+              <div class="payment-options">
+                <label class="payment-option">
+                  <input type="radio" formControlName="paymentMethod" value="ONLINE" />
+                  <div>
+                    <strong>Pay online with Razorpay</strong>
+                    <small>Pay during checkout through Razorpay and place the order instantly.</small>
+                  </div>
+                </label>
+                <label class="payment-option">
+                  <input type="radio" formControlName="paymentMethod" value="COD" />
+                  <div>
+                    <strong>Cash on delivery</strong>
+                    <small>Pay when the order reaches your address.</small>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <label class="form-field">
+              <span>Full name</span>
+              <input formControlName="fullName" placeholder="Enter the receiver's full name" />
+            </label>
+            <label class="form-field">
+              <span>Mobile number</span>
+              <input formControlName="mobileNumber" placeholder="Enter a reachable phone number" />
+            </label>
+            <label class="form-field">
+              <span>Flat / house / street</span>
+              <input formControlName="flatNumber" placeholder="House no., flat, street or landmark" />
+            </label>
+            <label class="form-field">
+              <span>City</span>
+              <input formControlName="city" placeholder="Enter your city" />
+            </label>
+            <label class="form-field">
+              <span>Pincode</span>
+              <input formControlName="pincode" placeholder="6-digit delivery pincode" />
+            </label>
+            <label class="form-field">
+              <span>State</span>
+              <input formControlName="state" placeholder="Enter your state" />
+            </label>
+
+            @if (checkoutForm.getRawValue().paymentMethod === 'ONLINE') {
+              <div class="wallet-box">
+                <span class="wallet-label">Linked wallet</span>
+                <strong>
+                  @if (checkoutForm.getRawValue().walletId) {
+                    Wallet #{{ checkoutForm.getRawValue().walletId }}
+                  } @else {
+                    Preparing your wallet...
+                  }
+                </strong>
+                <small>
+                  @if (wallet()) {
+                    Available balance: &#8377;{{ wallet()?.balance }}
+                  } @else {
+                    Checking your available balance...
+                  }
+                </small>
+                <small>Razorpay payment at checkout will be verified through this wallet automatically.</small>
+              </div>
+            }
+          </form>
+
+          @if (error()) {
+            <p class="error">{{ error() }}</p>
+          }
+          @if (info()) {
+            <p class="info">{{ info() }}</p>
+          }
+
+          @if (latestReceipt() && checkoutForm.getRawValue().paymentMethod === 'ONLINE') {
+            <button type="button" class="receipt-btn" (click)="downloadReceipt()">Generate Payment Receipt</button>
+          }
+
+          <button type="button" class="primary-btn" (click)="checkout()">
+            @if (checkoutForm.getRawValue().paymentMethod === 'COD') {
+              Place Cash on Delivery Order
+            } @else {
+              Pay with Razorpay and Order
+            }
+          </button>
+        </aside>
+      }
+    </div>
+  }
+</section>

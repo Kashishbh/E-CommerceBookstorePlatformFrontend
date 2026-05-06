@@ -1,0 +1,27 @@
+﻿<section class="page-shell">
+  <p class="eyebrow">Wishlist</p>
+  <h1>Saved for later</h1>
+
+  @if (info()) {
+    <p class="info">{{ info() }}</p>
+  }
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <div class="wishlist-grid">
+    @for (item of wishlist()?.items || []; track item.itemId) {
+      <article class="wish-card">
+        <div class="wish-cover"></div>
+        <strong>{{ item.bookTitle }}</strong>
+        <p>&#8377;{{ item.bookPrice }}</p>
+        <div class="actions">
+          <button type="button" (click)="moveToCart(item.bookId)">Move to cart</button>
+          <button type="button" class="light" (click)="removeBook(item.bookId)">Remove</button>
+        </div>
+      </article>
+    } @empty {
+      <div class="state">Your wishlist is empty.</div>
+    }
+  </div>
+</section>

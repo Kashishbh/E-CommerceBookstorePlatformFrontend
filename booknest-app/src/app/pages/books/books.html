@@ -1,0 +1,47 @@
+<section class="page-shell">
+  <div class="page-head">
+    <div>
+      <p class="eyebrow">Book catalog</p>
+      <h1>Browse the catalog</h1>
+    </div>
+    <div class="filters-inline">
+      <input [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)" placeholder="Search title, author, genre..." />
+      <select [ngModel]="selectedGenre()" (ngModelChange)="onGenreChange($event)">
+        @for (genre of genres(); track genre) {
+          <option [value]="genre">{{ genre }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  @if (actionMessage()) {
+    <div class="state info">{{ actionMessage() }}</div>
+  }
+
+  @if (loading()) {
+    <div class="state">Loading books...</div>
+  } @else {
+    <div class="books-grid">
+      @for (book of filteredBooks(); track book.bookId) {
+        <article class="catalog-card">
+          <a class="card-link" [routerLink]="['/books', book.bookId]">
+            @if (book.coverImageUrl) {
+              <img class="catalog-cover catalog-image" [src]="book.coverImageUrl" [alt]="book.title + ' cover'" />
+            } @else {
+              <div class="catalog-cover"></div>
+            }
+            <span class="catalog-genre">{{ book.genre || 'Book' }}</span>
+            <h3>{{ book.title }}</h3>
+            <p>by {{ book.author }}</p>
+            <strong>&#8377;{{ book.price }}</strong>
+          </a>
+          <div class="actions three-actions">
+            <button type="button" class="primary-action" [disabled]="actionBusyBookId() === book.bookId" (click)="orderNow(book)">Order Now</button>
+            <button type="button" [disabled]="actionBusyBookId() === book.bookId" (click)="addToCart(book)">Add to Cart</button>
+            <button type="button" class="wishlist-action" [disabled]="actionBusyBookId() === book.bookId" (click)="addToWishlist(book)">Wishlist</button>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

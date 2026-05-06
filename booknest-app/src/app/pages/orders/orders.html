@@ -1,0 +1,42 @@
+﻿<section class="page-shell">
+  <p class="eyebrow">Orders</p>
+  <h1>Your order timeline</h1>
+  @if (info()) { <p class="info">{{ info() }}</p> }
+  @if (error()) { <p class="error">{{ error() }}</p> }
+
+  <div class="orders-grid">
+    @for (order of orders(); track order.orderId) {
+      <article class="order-card">
+        <div class="row">
+          <strong>#{{ order.orderId }}</strong>
+          <span
+            class="badge"
+            [ngClass]="{
+              'badge-placed': order.orderStatus === 'PLACED' || order.orderStatus === 'CONFIRMED',
+              'badge-dispatched': order.orderStatus === 'DISPATCHED',
+              'badge-delivered': order.orderStatus === 'DELIVERED',
+              'badge-cancelled': order.orderStatus === 'CANCELLED'
+            }"
+          >
+            {{ order.orderStatus }}
+          </span>
+        </div>
+        <h3>{{ order.productName }}</h3>
+        <p>{{ order.modeOfPayment }} • Qty {{ order.quantity }}</p>
+        <p class="status-line">Current status: <strong>{{ order.orderStatus }}</strong></p>
+        <small class="order-date">{{ order.orderDate | date:'medium' }}</small>
+        <strong>&#8377;{{ order.amountPaid }}</strong>
+        @if (order.orderStatus !== 'DELIVERED' && order.orderStatus !== 'CANCELLED') {
+          <button type="button" (click)="cancel(order.orderId)">Cancel order</button>
+        } @else if (order.orderStatus === 'DELIVERED') {
+          <button type="button" (click)="writeReview(order)">Write Review</button>
+        }
+        @if (order.modeOfPayment === 'ONLINE') {
+          <button type="button" class="receipt-btn" (click)="downloadReceipt(order)">Download Payment Receipt</button>
+        }
+      </article>
+    } @empty {
+      <div class="state">No orders found for this account yet.</div>
+    }
+  </div>
+</section>

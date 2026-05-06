@@ -1,0 +1,31 @@
+<section class="auth-shell">
+  <div class="auth-card">
+    <div>
+      <p class="eyebrow">Welcome back</p>
+      <h1>Login to BookNest</h1>
+      <p>Sign in to continue with your saved cart, wishlist, wallet, and orders.</p>
+    </div>
+
+    <button type="button" class="google-btn" (click)="googleLogin()">Continue with Google</button>
+    <div class="divider"><span>or use email</span></div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <label>
+        <span>Email</span>
+        <input formControlName="email" type="email" placeholder="kas@example.com" />
+      </label>
+      <label>
+        <span>Password</span>
+        <input formControlName="password" type="password" placeholder="Password@123" />
+      </label>
+
+      @if (error()) {
+        <p class="error">{{ error() }}</p>
+      }
+
+      <button type="submit" [disabled]="loading()">{{ loading() ? 'Signing in...' : 'Login' }}</button>
+    </form>
+
+    <p class="helper">No account? <a routerLink="/register">Create one</a></p>
+  </div>
+</section>

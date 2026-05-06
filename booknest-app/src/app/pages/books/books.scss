@@ -1,0 +1,164 @@
+.page-shell {
+  max-width: 1340px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+}
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+  color: #2b413d;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  color: #16213e;
+}
+
+.filters-inline {
+  display: flex;
+  gap: 0.85rem;
+}
+
+.filters-inline input,
+.filters-inline select {
+  min-width: 220px;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 290px));
+  justify-content: center;
+  gap: 1rem;
+}
+
+.catalog-card {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 26px;
+  box-shadow: 0 16px 50px rgba(17, 24, 39, 0.06);
+}
+
+.card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.catalog-cover {
+  height: 160px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #e38b5c, #dc7b88, #4361ee);
+  margin-bottom: 0.85rem;
+}
+
+.catalog-cover:not(img) {
+  height: 160px;
+}
+
+.catalog-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 260px;
+  object-fit: contain;
+  padding: 0;
+  background: #fffdfb;
+}
+
+.catalog-genre {
+  color: #ff8e53;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.actions button {
+  flex: 1;
+  border: 0;
+  border-radius: 12px;
+  padding: 0.75rem 0.85rem;
+  font-weight: 700;
+  background: #ffddbd;
+  color: #5f431f;
+  cursor: pointer;
+}
+
+.state {
+  padding: 1rem;
+  background: #fff;
+  border-radius: 18px;
+}
+
+.actions.three-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  align-items: stretch;
+}
+
+.actions.three-actions button {
+  min-height: 64px;
+  padding: 0.9rem 0.75rem;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.15;
+  font-size: 1rem;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.actions .primary-action {
+  background: #c7dbde;
+  color: #294449;
+}
+
+.actions .wishlist-action {
+  background: #ffe2f0;
+  color: #7a4660;
+}
+
+@media (max-width: 900px) {
+  .page-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters-inline {
+    flex-direction: column;
+  }
+
+  .books-grid {
+    grid-template-columns: minmax(280px, 1fr);
+  }
+
+  .actions.three-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.state.info {
+  margin-top: 1rem;
+  color: #0f766e;
+  background: #ecfeff;
+}

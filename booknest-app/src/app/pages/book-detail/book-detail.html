@@ -1,0 +1,81 @@
+<section class="detail-shell">
+  @if (loading()) {
+    <div class="state-card">Loading book details...</div>
+  } @else if (error()) {
+    <div class="state-card error">{{ error() }}</div>
+  } @else if (book(); as selectedBook) {
+    <a routerLink="/books" class="back-link">Back to books</a>
+
+    <div class="detail-card">
+      @if (selectedBook.coverImageUrl) {
+        <img class="detail-cover detail-image" [src]="selectedBook.coverImageUrl" [alt]="selectedBook.title + ' cover'" />
+      } @else {
+        <div class="detail-cover"></div>
+      }
+
+      <div class="detail-copy">
+        <p class="eyebrow">{{ selectedBook.genre || 'Book' }}</p>
+        <h1>{{ selectedBook.title }}</h1>
+        <p class="author">by {{ selectedBook.author }}</p>
+
+        <div class="meta-row">
+          <span>Publisher: {{ selectedBook.publisher || 'BookNest Select' }}</span>
+          <span>Rating: {{ selectedBook.rating || 'N/A' }}</span>
+        </div>
+
+        <p class="price">&#8377;{{ selectedBook.price }}</p>
+        <p class="description">{{ description() }}</p>
+
+        @if (actionMessage()) {
+          <div class="detail-info">{{ actionMessage() }}</div>
+        }
+
+        <div class="action-row">
+          <button type="button" class="primary-action" (click)="orderNow()">Order Now</button>
+          <button type="button" (click)="addToCart()">Add to Cart</button>
+          <button type="button" class="wishlist-action" (click)="addToWishlist()">Wishlist</button>
+        </div>
+
+        @if (canWriteReview() && reviewMode()) {
+          <div class="review-card">
+            <h3>Write a review</h3>
+            <label class="review-field">
+              <span>Rating</span>
+              <select [ngModel]="reviewRating()" (ngModelChange)="reviewRating.set(+$event)">
+                <option [ngValue]="5">5</option>
+                <option [ngValue]="4">4</option>
+                <option [ngValue]="3">3</option>
+                <option [ngValue]="2">2</option>
+                <option [ngValue]="1">1</option>
+              </select>
+            </label>
+            <label class="review-field">
+              <span>Your review</span>
+              <textarea [ngModel]="reviewComment()" (ngModelChange)="reviewComment.set($event)" rows="4" placeholder="Share your thoughts about this book"></textarea>
+            </label>
+            <button type="button" class="review-submit" [disabled]="reviewBusy()" (click)="submitReview()">Submit Review</button>
+          </div>
+        } @else if (canWriteReview()) {
+          <button type="button" class="review-link" (click)="openReviewForm()">Write Review</button>
+        }
+
+        @if (reviews().length) {
+          <section class="reviews-section">
+            <h3>Reader reviews</h3>
+            <div class="reviews-list">
+              @for (review of reviews(); track review.reviewId) {
+                <article class="review-item">
+                  <div class="review-top">
+                    <strong>{{ review.rating }}/5</strong>
+                    <span>User #{{ review.userId }}</span>
+                  </div>
+                  <p>{{ review.comment }}</p>
+                </article>
+              }
+            </div>
+          </section>
+        }
+      </div>
+    </div>
+  }
+</section>

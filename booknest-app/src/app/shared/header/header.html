@@ -1,0 +1,49 @@
+<header class="header-wrap">
+  <div class="top-stripe"></div>
+  <div class="header-card">
+    <a class="brand" routerLink="/">
+      <img class="brand-logo" src="/assets/booknest-logo.jpeg" alt="BookNest logo" />
+      <span>
+        <strong>BookNest</strong>
+        <small>read better, buy smarter</small>
+      </span>
+    </a>
+
+    <form class="search" (ngSubmit)="submitSearch()">
+      <select class="search-filter">
+        <option>All</option>
+        <option>Books</option>
+        <option>E-Books</option>
+      </select>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        name="searchTerm"
+        placeholder="Search thousands of books..."
+      />
+      <button type="submit">Search</button>
+    </form>
+
+    <div class="actions">
+      @if (authService.isAuthenticated()) {
+        <span class="user-chip">{{ authService.user()?.fullName || 'User' }}</span>
+        @if (authService.isAdmin()) {
+          <a routerLink="/admin" class="ghost-link">Admin</a>
+        }
+        <a routerLink="/notifications" class="ghost-link">Alerts</a>
+        <a routerLink="/orders" class="ghost-link">Orders</a>
+        <button class="outline-btn" type="button" (click)="logout()">Logout</button>
+      } @else {
+        <a routerLink="/login" class="ghost-link">Login</a>
+        <a routerLink="/register" class="outline-btn">Create Account</a>
+      }
+    </div>
+  </div>
+
+  <nav class="mega-nav">
+    <a routerLink="/books" routerLinkActive="active">Books</a>
+    <a routerLink="/wishlist" routerLinkActive="active">Wishlist</a>
+    <a routerLink="/cart" routerLinkActive="active">Cart</a>
+    <a routerLink="/wallet" routerLinkActive="active">Wallet</a>
+  </nav>
+</header>

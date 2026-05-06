@@ -1,0 +1,21 @@
+﻿<section class="page-shell">
+  <p class="eyebrow">Notifications</p>
+  <h1>Your alerts</h1>
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <div class="notification-list">
+    @for (item of notifications(); track item.notificationId) {
+      <article class="notification-card">
+        <div class="row">
+          <strong>{{ item.type }}</strong>
+          <span>{{ item.createdAt | date:'medium' }}</span>
+        </div>
+        <p>{{ item.message }}</p>
+      </article>
+    } @empty {
+      <div class="state">No notifications yet.</div>
+    }
+  </div>
+</section>

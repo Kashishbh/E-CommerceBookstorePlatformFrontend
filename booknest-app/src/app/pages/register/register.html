@@ -1,0 +1,47 @@
+<section class="auth-shell">
+  <div class="auth-card">
+    <div>
+      <p class="eyebrow">Join BookNest</p>
+      <h1>Create your account</h1>
+      <p>Create an account to unlock your cart, wishlist, wallet, orders, and notifications.</p>
+    </div>
+
+    <button type="button" class="google-btn" (click)="googleLogin()">Continue with Google</button>
+    <div class="divider"><span>or create with email</span></div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <label>
+        <span>Full name</span>
+        <input formControlName="fullName" type="text" placeholder="Kashish" />
+      </label>
+      <label>
+        <span>Email</span>
+        <input formControlName="email" type="email" placeholder="kas@example.com" />
+      </label>
+      <label>
+        <span>Mobile</span>
+        <input formControlName="mobile" type="text" placeholder="9876543210" />
+      </label>
+      <label>
+        <span>Password</span>
+        <input formControlName="password" type="password" placeholder="Password@123" />
+      </label>
+      @if (form.controls.password.touched && form.controls.password.errors?.['minlength']) {
+        <p class="error">Password must be at least 8 characters long.</p>
+      }
+      @if (form.controls.password.touched && form.controls.password.errors?.['pattern']) {
+        <p class="error">
+          Password must include at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.
+        </p>
+      }
+
+      @if (error()) {
+        <p class="error">{{ error() }}</p>
+      }
+
+      <button type="submit" [disabled]="loading()">{{ loading() ? 'Creating...' : 'Create Account' }}</button>
+    </form>
+
+    <p class="helper">Already registered? <a routerLink="/login">Login</a></p>
+  </div>
+</section>

@@ -1,0 +1,93 @@
+<section class="promo-shell">
+  <div class="promo-strip">
+    <span>Discover handpicked reads for every mood</span>
+    <span>Thoughtful stories, classics, and new favorites</span>
+  </div>
+
+  <section class="hero-banner">
+    <div class="hero-copy">
+      <p class="eyebrow">BookNest storefront</p>
+      <h1>Pick your next shelf favorite.</h1>
+      <p class="lead">
+        Discover bright, giftable, and binge-worthy books with a storefront that connects directly to your catalog, cart, wallet, and orders.
+      </p>
+
+      <div class="hero-actions">
+        <a routerLink="/books" class="primary-btn">Browse Collection</a>
+        <a routerLink="/wishlist" class="secondary-btn">Open Wishlist</a>
+      </div>
+    </div>
+
+    <div class="slider-card">
+      <div class="thumb-ribbon">
+        @for (slide of heroSlides; track slide.image; let i = $index) {
+          <button type="button" class="thumb-card" [class.active]="activeSlide() === i" (click)="goToSlide(i)">
+            <img [src]="slide.image" [alt]="slide.alt" />
+          </button>
+        }
+      </div>
+
+      <div class="slider-frame">
+        @for (slide of heroSlides; track slide.image; let i = $index) {
+          <article class="slide" [class.active]="activeSlide() === i">
+            <img [src]="slide.image" [alt]="slide.alt" />
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+              <span class="slide-badge">{{ slide.badge }}</span>
+              <h3>{{ slide.title }}</h3>
+              <p>{{ slide.caption }}</p>
+              <a routerLink="/books" class="order-btn">Order Now</a>
+            </div>
+          </article>
+        }
+      </div>
+
+      <div class="slider-dots">
+        @for (slide of heroSlides; track slide.image; let i = $index) {
+          <button type="button" [class.active]="activeSlide() === i" (click)="goToSlide(i)" [attr.aria-label]="'Go to slide ' + (i + 1)"></button>
+        }
+      </div>
+    </div>
+  </section>
+
+  @if (actionMessage()) {
+    <div class="state-card info">{{ actionMessage() }}</div>
+  }
+</section>
+
+<section class="selling-shell">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Now selling</p>
+      <h2>Books ready for checkout</h2>
+    </div>
+    <a routerLink="/books" class="ghost-btn">View all books</a>
+  </div>
+
+  @if (loading()) {
+    <div class="state-card">Loading books...</div>
+  } @else if (error()) {
+    <div class="state-card error">{{ error() }}</div>
+  } @else {
+    <div class="book-grid">
+      @for (book of sellingBooks(); track book.bookId) {
+        <article class="book-card">
+          <a class="card-link" [routerLink]="['/books', book.bookId]">
+            @if (book.coverImageUrl) {
+              <img class="cover-chip cover-image" [src]="book.coverImageUrl" [alt]="book.title + ' cover'" />
+            } @else {
+              <div class="cover-chip"></div>
+            }
+            <div class="book-meta">
+              <strong>{{ book.title }}</strong>
+              <small>by {{ book.author }}</small>
+            </div>
+            <div class="book-row">
+              <p class="price">&#8377;{{ book.price }}</p>
+            </div>
+          </a>
+        </article>
+      }
+    </div>
+  }
+</section>
