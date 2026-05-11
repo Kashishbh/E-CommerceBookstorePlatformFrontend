@@ -31,7 +31,7 @@
         } @else if (order.orderStatus === 'DELIVERED') {
           <button type="button" (click)="writeReview(order)">Write Review</button>
         }
-        @if (order.modeOfPayment === 'ONLINE') {
+        @if (order.modeOfPayment === 'ONLINE' && hasReceipt(order.orderId)) {
           <button type="button" class="receipt-btn" (click)="downloadReceipt(order)">Download Payment Receipt</button>
         }
       </article>

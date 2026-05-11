@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Wishlist as WishlistModel } from '../../core/models';
+import { Book, Wishlist as WishlistModel } from '../../core/models';
 import { AuthService } from '../../core/services/auth';
+import { BooksService } from '../../core/services/books';
 import { ShopService } from '../../core/services/shop';
 
 @Component({
@@ -13,6 +14,7 @@ import { ShopService } from '../../core/services/shop';
 })
 export class Wishlist implements OnInit {
   private readonly shopService = inject(ShopService);
+  private readonly booksService = inject(BooksService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
@@ -20,13 +22,19 @@ export class Wishlist implements OnInit {
   protected readonly userId = computed(() => this.authService.getCurrentUserId());
   protected readonly info = signal('');
   protected readonly error = signal('');
+  protected readonly bookCovers = signal<Record<number, string>>({});
 
   ngOnInit(): void {
     if (!this.userId()) {
       this.router.navigate(['/login']);
       return;
     }
+    this.loadBookCovers();
     this.loadWishlist();
+  }
+
+  protected getCover(bookId: number): string {
+    return this.bookCovers()[bookId] || '';
   }
 
   protected loadWishlist(): void {
@@ -76,6 +84,23 @@ export class Wishlist implements OnInit {
         this.loadWishlist();
       },
       error: (error) => this.error.set(error?.error?.message || 'This book could not be moved to cart.')
+    });
+  }
+
+  private loadBookCovers(): void {
+    this.booksService.getBooks().subscribe({
+      next: (books: Book[]) => {
+        const covers = books.reduce<Record<number, string>>((acc, book) => {
+          if (book.bookId && book.coverImageUrl) {
+            acc[book.bookId] = book.coverImageUrl;
+          }
+          return acc;
+        }, {});
+        this.bookCovers.set(covers);
+      },
+      error: () => {
+        this.bookCovers.set({});
+      }
     });
   }
 }

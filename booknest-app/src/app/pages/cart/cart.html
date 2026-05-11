@@ -118,10 +118,6 @@
             <p class="info">{{ info() }}</p>
           }
 
-          @if (latestReceipt() && checkoutForm.getRawValue().paymentMethod === 'ONLINE') {
-            <button type="button" class="receipt-btn" (click)="downloadReceipt()">Generate Payment Receipt</button>
-          }
-
           <button type="button" class="primary-btn" (click)="checkout()">
             @if (checkoutForm.getRawValue().paymentMethod === 'COD') {
               Place Cash on Delivery Order

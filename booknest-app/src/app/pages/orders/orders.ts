@@ -65,23 +65,18 @@ export class Orders implements OnInit {
     });
   }
 
+  protected hasReceipt(orderId: number): boolean {
+    return this.receiptHistory().some((item) => item.orderId === orderId);
+  }
+
   protected downloadReceipt(order: Order): void {
     const storedReceipt = this.receiptHistory().find((item) => item.orderId === order.orderId);
-    const receipt: PaymentReceipt = storedReceipt ?? {
-      orderId: order.orderId,
-      razorpayOrderId: 'Recorded with Razorpay',
-      razorpayPaymentId: 'Available in payment gateway record',
-      amountPaid: order.amountPaid,
-      customerName: order.address?.fullName || 'BookNest customer',
-      customerEmail: this.authService.user()?.email || '',
-      customerMobile: order.address?.mobileNumber || '',
-      address: order.address
-        ? `${order.address.flatNumber}, ${order.address.city}, ${order.address.state} - ${order.address.pincode}`
-        : 'Address not available',
-      productName: order.productName,
-      quantity: order.quantity,
-      paymentDate: order.orderDate
-    };
+    if (!storedReceipt) {
+      this.error.set('Payment receipt is available only for successfully completed online payments.');
+      return;
+    }
+
+    const receipt: PaymentReceipt = storedReceipt;
 
     const receiptHtml = `
       <html>
@@ -113,7 +108,7 @@ export class Orders implements OnInit {
             <div class="row"><strong>Payment Mode</strong><span>${order.modeOfPayment}</span></div>
             <div class="row"><strong>Delivery Address</strong><span>${receipt.address}</span></div>
             <div class="row"><strong>Payment Date</strong><span>${new Date(receipt.paymentDate).toLocaleString()}</span></div>
-            <div class="row total"><strong>Amount Paid</strong><span>₹${receipt.amountPaid}</span></div>
+            <div class="row total"><strong>Amount Paid</strong><span>&#8377;${receipt.amountPaid}</span></div>
           </div>
         </body>
       </html>

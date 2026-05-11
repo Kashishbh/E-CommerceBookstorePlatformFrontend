@@ -12,7 +12,11 @@
   <div class="wishlist-grid">
     @for (item of wishlist()?.items || []; track item.itemId) {
       <article class="wish-card">
-        <div class="wish-cover"></div>
+        @if (getCover(item.bookId)) {
+          <img class="wish-cover wish-image" [src]="getCover(item.bookId)" [alt]="item.bookTitle" />
+        } @else {
+          <div class="wish-cover"></div>
+        }
         <strong>{{ item.bookTitle }}</strong>
         <p>&#8377;{{ item.bookPrice }}</p>
         <div class="actions">
