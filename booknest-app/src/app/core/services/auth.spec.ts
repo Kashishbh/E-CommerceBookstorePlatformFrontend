@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { HttpHeaders, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter, Router } from '@angular/router';
-import { vi } from 'vitest';
 import { AuthService } from './auth';
 
 describe('AuthService', () => {
@@ -25,7 +24,7 @@ describe('AuthService', () => {
     service = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);
     router = TestBed.inject(Router);
-    vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    jest.spyOn(router, 'navigate').mockResolvedValue(true);
   });
 
   afterEach(() => {
@@ -161,7 +160,7 @@ describe('AuthService', () => {
 
     const reloadedService = TestBed.inject(AuthService);
     const reloadedRouter = TestBed.inject(Router);
-    vi.spyOn(reloadedRouter, 'navigate').mockResolvedValue(true);
+    jest.spyOn(reloadedRouter, 'navigate').mockResolvedValue(true);
 
     reloadedService.logout();
 

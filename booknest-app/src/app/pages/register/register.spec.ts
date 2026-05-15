@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { vi } from 'vitest';
 import { Register } from './register';
 import { AuthService } from '../../core/services/auth';
 
@@ -11,8 +10,8 @@ describe('Register Component', () => {
 
   beforeEach(async () => {
     authServiceSpy = {
-      register: vi.fn(),
-      startGoogleLogin: vi.fn()
+      register: jest.fn(),
+      startGoogleLogin: jest.fn()
     };
 
     await TestBed.configureTestingModule({
@@ -24,7 +23,7 @@ describe('Register Component', () => {
     }).compileComponents();
 
     router = TestBed.inject(Router);
-    vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    jest.spyOn(router, 'navigate').mockResolvedValue(true);
   });
 
   it('should create the register component', () => {
@@ -69,7 +68,7 @@ describe('Register Component', () => {
   });
 
   it('should call register service on valid submit', () => {
-    (authServiceSpy.register as ReturnType<typeof vi.fn>).mockReturnValue(of({
+    (authServiceSpy.register as jest.Mock).mockReturnValue(of({
       token: 'abc123',
       user: {
         userId: 1,

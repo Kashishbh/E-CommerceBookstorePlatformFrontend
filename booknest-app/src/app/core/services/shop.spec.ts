@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpHeaders, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { of } from 'rxjs';
-import { vi } from 'vitest';
 import { ShopService } from './shop';
 import { AuthService } from './auth';
 
@@ -13,7 +11,7 @@ describe('ShopService', () => {
 
   beforeEach(() => {
     authServiceSpy = {
-      getAuthHeaders: vi.fn(() => new HttpHeaders({ Authorization: 'Bearer test-token' }))
+      getAuthHeaders: jest.fn(() => new HttpHeaders({ Authorization: 'Bearer test-token' }))
     };
 
     TestBed.configureTestingModule({
